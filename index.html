@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+	<title> Color Box </title>
+	
+	<meta charset="utf-8 />
+	<meta http-equiv="Content-type" conten="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, intial-scale=1" />
+	
+	<style>
+		#box {
+			width:200px;
+			height:200px;
+			background-color: red;
+			border-radius: none;
+			display: none;
+			position: relative;
+		},
+		
+		.bold {
+			font-weight:bold;
+		}
+		
+	
+	</style>
+</head>
+
+<body>
+	
+	<h1> Test your reactions </h1>
+	<p> Click on the boxes as quickly as you can! </p>
+	<p class="bold"> Your time: <span id="time"></span></p>
+	<div id="box"></div>
+	
+
+	<script type="text/javascript"> 
+	//Store reaction times in an array 
+		var clickTimes = [];
+		
+	//generate random color for new circle or square
+		function getRandomColor() {
+			var letters = '0123456789ABCDEF'.split('');
+			var color = '#';
+			for (var i = 0; i<6; i++) {
+				color += letters[Math.round(Math.random() *15)];
+			}
+			return color;
+		}
+		//store 1) the time circle/box was clicked 2) time circle/box was created 3)reaction time
+		var clickedTime; var createdTime; var reactionTime;
+		
+		//function to make circle or box
+		function makeBox() {
+		
+			var time=Math.random(); var item=Math.random();
+			
+			//time it takes for boxes to appear
+			time = time*3000;
+			
+			setTimeout(function() {
+				
+				if (Math.random()>0.5) {
+					// generate a circle if random number is less than 0.5
+					document.getElementById("box").style.borderRadius = "100px";
+				}
+				else {
+					//generate a box if random number is more than 0.5
+					document.getElementById("box").style.borderRadius = "0";
+				}
+			
+			//setting top and left margins so that circle/box appears at a random place in browser.
+			var top = Math.round(Math.random() * 300);
+			var left = Math.round(Math.random() * 300);
+				document.getElementById("box").style.top= top+"px";
+				
+				document.getElementById("box").style.left= left+"px";
+				
+			//using getRandomColor to set color of circle/box
+				document.getElementById("box").style.backgroundColor = getRandomColor();
+				
+				document.getElementById("box").style.display="block";
+				
+				createdTime= Date.now();
+				
+			}, time);
+		}
+	
+		//determine time user clicked on circle/box
+		document.getElementById("box").onclick = function() {
+		
+			clickedTime = Date.now();
+			
+			reactionTime = (clickedTime - createdTime)/1000;
+			
+			clickTimes.push(reactionTime);
+			
+			document.getElementById("time").innerHTML = reactionTime;
+			
+			this.style.display = "none";
+			
+			makeBox();
+		};
+		
+		makeBox();
+	
+	</script>
+</body>
+</html>
